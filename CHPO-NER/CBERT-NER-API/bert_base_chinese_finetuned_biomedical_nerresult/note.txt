@@ -1,0 +1,1 @@
+bert_base_chinese_finetuned_biomedical_nerresult

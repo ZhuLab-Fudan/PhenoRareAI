@@ -1,0 +1,10 @@
+analysis:
+  genomeAssembly: hg38
+  vcf: Exomiser-master2022/exomiser-core/src/test/resources/Pfeiffer.vcf
+  exomiser: 22datahg/2209_hg38/
+  tsv: true
+#  transcriptdb: refseq
+  global: true
+hpoIds: 
+prefix: 
+outdir:

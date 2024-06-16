@@ -1,0 +1,150 @@
+<!-- Code adapted from
+https://observablehq.com/@d3/Fradial-tidy-tree
+https://javadude.wordpress.com/2012/06/20/d3-js-from-tree-to-cluster-and-radial-projection/
+https://stackoverflow.com/questions/59783070/d3-v5-radial-tree-cluster
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>D3.js Radial Tree Example</title>
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+        <style>
+            svg {
+                border: solid 1px #ccc;
+            }
+            .link {
+                fill: none;
+                stroke: #ccc;
+                stroke-width: 1.5px;
+            }
+        </style>
+    </head>
+    <body>
+
+
+<script type="text/javascript">
+
+    let root = {"name" : "表型异常", "children" : [{'children': [{'name': ['神经系统异常'], 'children': [{'children': [{'name': ['神经系统生理功能异常'], 'children': [{'children': [{'name': ['运动异常'], 'children': [{'children': [{'name': ['步态不稳_Gait disturbance'], 'children': [{'children': [{'name': ['行走困难']}]}]}]}, {'children': [{'name': ['反射异常'], 'children': [{'children': [{'name': ['腱反射减低'], 'children': [{'children': [{'name': ['腱反射减弱']}]}, {'children': [{'name': ['神经反射消失']}]}]}]}]}]}]}]}, {'children': [{'name': ['中枢性运动功能异常'], 'children': [{'children': [{'name': ['瘫痪'], 'children': [{'children': [{'name': ['膈肌麻痹']}]}]}]}]}]}]}]}, {'children': [{'name': ['神经系统形态异常'], 'children': [{'children': [{'name': ['中枢神经系统的形态异常'], 'children': [{'children': [{'name': ['中枢神经系统髓鞘异常']}]}, {'children': [{'name': ['脑形态学异常']}]}, {'children': [{'name': ['蛛网膜下腔形态异常'], 'children': [{'children': [{'name': ['蛛网膜下腔出血']}]}]}]}]}]}, {'children': [{'name': ['髓鞘异常'], 'children': [{'children': [{'name': ['中枢神经系统髓鞘异常']}]}]}]}]}]}]}]}, {'children': [{'name': ['生长异常'], 'children': [{'children': [{'name': ['体重异常']}]}]}]}, {'children': [{'name': ['免疫系统异常'], 'children': [{'children': [{'name': ['免疫系统功能异常'], 'children': [{'children': [{'name': ['异常感染'], 'children': [{'children': [{'name': ['反复感染'], 'children': [{'children': [{'name': ['反复呼吸道感染']}]}]}]}]}]}]}]}, {'children': [{'name': ['淋巴系统异常'], 'children': [{'children': [{'name': ['脾脏异常'], 'children': [{'children': [{'name': ['脾脏形态异常']}]}]}]}]}]}]}]}, {'children': [{'name': ['血液和造血组织异常'], 'children': [{'children': [{'name': ['异常出血_Abnormal bleeding'], 'children': [{'children': [{'name': ['内出血'], 'children': [{'children': [{'name': ['颅内出血'], 'children': [{'children': [{'name': ['蛛网膜下腔出血']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['泌尿生殖系统异常'], 'children': [{'children': [{'name': ['泌尿系统异常'], 'children': [{'children': [{'name': ['下尿路异常'], 'children': [{'children': [{'name': ['膀胱异常'], 'children': [{'children': [{'name': ['膀胱功能异常']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['消化系统异常'], 'children': [{'children': [{'name': ['腹部器官异常'], 'children': [{'children': [{'name': ['肝脏异常'], 'children': [{'children': [{'name': ['肝脏形态异常']}]}]}]}, {'children': [{'name': ['脾脏异常'], 'children': [{'children': [{'name': ['脾脏形态异常']}]}]}]}]}]}, {'children': [{'name': ['腹部形态结构异常'], 'children': [{'children': [{'name': ['内脏肿大'], 'children': [{'children': [{'name': ['肝脏肿大']}]}, {'children': [{'name': ['脾肿大']}]}]}]}]}]}]}]}, {'children': [{'name': ['肢体异常'], 'children': [{'children': [{'name': ['四肢肌肉异常'], 'children': [{'children': [{'name': ['四肢肌肉无力'], 'children': [{'children': [{'name': ['下肢肌肉无力']}]}]}]}, {'children': [{'name': ['上肢肌肉异常'], 'children': [{'children': [{'name': ['肩胛带肌肉异常'], 'children': [{'children': [{'name': ['翼状肩胛']}]}]}]}]}]}]}]}, {'children': [{'name': ['上肢异常'], 'children': [{'children': [{'name': ['上肢肌肉异常'], 'children': [{'children': [{'name': ['肩胛带肌肉异常'], 'children': [{'children': [{'name': ['翼状肩胛']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['代谢紊乱/稳态失衡'], 'children': [{'children': [{'name': ['组织代谢物浓度异常'], 'children': [{'children': [{'name': ['肌肉组织代谢物浓度异常'], 'children': [{'children': [{'name': ['肌糖原含量异常'], 'children': [{'children': [{'name': ['肌糖原含量增加']}]}]}]}]}]}]}]}, {'children': [{'name': ['内稳态平衡的失常'], 'children': [{'children': [{'name': ['体温调节异常'], 'children': [{'children': [{'name': ['发热']}]}]}]}, {'children': [{'name': ['体液调节异常'], 'children': [{'children': [{'name': ['水肿'], 'children': [{'children': [{'name': ['胸腔积液']}]}]}]}]}]}]}]}, {'children': [{'name': ['酶/辅酶活性异常'], 'children': [{'children': [{'name': ['乳酸脱氢酶活性异常'], 'children': [{'children': [{'name': ['乳酸脱氢酶活性增高']}]}]}]}]}]}, {'children': [{'name': ['血液代谢物浓度异常'], 'children': [{'children': [{'name': ['血液蛋白水平异常'], 'children': [{'children': [{'name': ['循环系统内酶浓度水平异常'], 'children': [{'children': [{'name': ['血液肌酸激酶水平异常'], 'children': [{'children': [{'name': ['血清肌酸磷酸激酶升高']}]}, {'children': [{'name': ['血液肌酸激酶MB亚型增加']}]}]}]}]}]}, {'children': [{'name': ['B型钠尿肽水平异常'], 'children': [{'children': [{'name': ['NT-proBNP水平增高']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['心血管系统的任何异常。'], 'children': [{'children': [{'name': ['脉管系统异常'], 'children': [{'children': [{'name': ['血管形态异常_Abnormal vascular morphology'], 'children': [{'children': [{'name': ['血管形态异常_Abnormal blood vessel morphology'], 'children': [{'children': [{'name': ['全身动脉形态异常']}]}, {'children': [{'name': ['血管扩张'], 'children': [{'children': [{'name': ['脑动脉扩张']}]}]}]}]}]}, {'children': [{'name': ['脑血管形态异常'], 'children': [{'children': [{'name': ['脑动脉形态异常'], 'children': [{'children': [{'name': ['脑动脉扩张']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['心血管系统生理异常'], 'children': [{'children': [{'name': ['心血管系统电生理异常'], 'children': [{'children': [{'name': ['心律失常'], 'children': [{'children': [{'name': ['窦房结源性电生理异常'], 'children': [{'children': [{'name': ['窦性心动过速']}]}]}]}, {'children': [{'name': ['室性心律失常'], 'children': [{'children': [{'name': ['心室预激'], 'children': [{'children': [{'name': ['预激综合征']}]}]}]}]}]}]}]}, {'children': [{'name': ['异常心电图'], 'children': [{'children': [{'name': ['PR间期异常'], 'children': [{'children': [{'name': ['PR间期缩短']}]}]}]}, {'children': [{'name': ['心室轴异常'], 'children': [{'children': [{'name': ['电轴右偏']}]}]}]}]}]}]}]}, {'children': [{'name': ['血液循环异常']}]}]}]}, {'children': [{'name': ['心血管系统形态异常'], 'children': [{'children': [{'name': ['心脏形态异常'], 'children': [{'children': [{'name': ['心脏扩大']}]}]}]}, {'children': [{'name': ['血管形态异常_Abnormal vascular morphology'], 'children': [{'children': [{'name': ['血管形态异常_Abnormal blood vessel morphology'], 'children': [{'children': [{'name': ['全身动脉形态异常']}]}, {'children': [{'name': ['血管扩张'], 'children': [{'children': [{'name': ['脑动脉扩张']}]}]}]}]}]}, {'children': [{'name': ['脑血管形态异常'], 'children': [{'children': [{'name': ['脑动脉形态异常'], 'children': [{'children': [{'name': ['脑动脉扩张']}]}]}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['头颈部异常'], 'children': [{'children': [{'name': ['头部异常'], 'children': [{'children': [{'name': ['脸部异常'], 'children': [{'children': [{'name': ['嘴部异常'], 'children': [{'children': [{'name': ['口腔形态异常_Abnormal oral morphology'], 'children': [{'children': [{'name': ['口腔形态异常_Abnormal oral cavity morphology'], 'children': [{'children': [{'name': ['舌异常'], 'children': [{'children': [{'name': ['舌头形态异常']}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['呼吸系统异常'], 'children': [{'children': [{'name': ['呼吸系统生理异常'], 'children': [{'children': [{'name': ['肺功能检测结果异常']}]}, {'children': [{'name': ['呼吸肌无力'], 'children': [{'children': [{'name': ['肌肉无力导致的呼吸功能不全']}]}]}]}, {'children': [{'name': ['呼吸功能不全'], 'children': [{'children': [{'name': ['呼吸衰竭']}]}, {'children': [{'name': ['肌肉无力导致的呼吸功能不全']}]}]}]}, {'children': [{'name': ['呼吸模式异常'], 'children': [{'children': [{'name': ['呼吸困难']}]}]}]}]}]}, {'children': [{'name': ['呼吸系统形态学异常'], 'children': [{'children': [{'name': ['肺部形态异常'], 'children': [{'children': [{'name': ['呼吸道感染'], 'children': [{'children': [{'name': ['反复呼吸道感染']}]}]}]}, {'children': [{'name': ['胸膜异常'], 'children': [{'children': [{'name': ['胸腔积液']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['耳部异常'], 'children': [{'children': [{'name': ['耳生理异常'], 'children': [{'children': [{'name': ['听力异常'], 'children': [{'children': [{'name': ['听力障碍']}]}]}]}]}]}]}]}, {'children': [{'name': ['肌肉骨骼系统异常'], 'children': [{'children': [{'name': ['骨骼系统异常'], 'children': [{'children': [{'name': ['骨骼形态异常'], 'children': [{'children': [{'name': ['中轴骨骼形态异常'], 'children': [{'children': [{'name': ['胸廓形态异常_Abnormal thorax morphology'], 'children': [{'children': [{'name': ['肩胛骨形态异常']}]}]}]}, {'children': [{'name': ['脊柱异常'], 'children': [{'children': [{'name': ['脊柱曲度异常'], 'children': [{'children': [{'name': ['脊柱侧弯']}]}]}]}, {'children': [{'name': ['脊柱强直']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['肌肉组织异常'], 'children': [{'children': [{'name': ['骨骼肌形态异常'], 'children': [{'children': [{'name': ['肌肉坚硬']}]}, {'children': [{'name': ['肌病'], 'children': [{'children': [{'name': ['EMG:肌病样异常']}]}]}]}, {'children': [{'name': ['肌肉大小异常'], 'children': [{'children': [{'name': ['骨骼肌肥大'], 'children': [{'children': [{'name': ['巨舌症']}]}]}]}]}]}]}]}, {'children': [{'name': ['肌肉生理机能异常'], 'children': [{'children': [{'name': ['肌电图异常'], 'children': [{'children': [{'name': ['EMG:肌病样异常']}]}]}]}, {'children': [{'name': ['功能性运动障碍'], 'children': [{'children': [{'name': ['爬楼梯困难']}]}, {'children': [{'name': ['行走困难']}]}, {'children': [{'name': ['下楼梯困难']}]}]}]}, {'children': [{'name': ['肌张力异常'], 'children': [{'children': [{'name': ['肌张力减退']}]}]}]}, {'children': [{'name': ['肌无力_Muscle weakness'], 'children': [{'children': [{'name': ['膈肌无力']}]}, {'children': [{'name': ['近端肌肉无力']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['全身性症状'], 'children': [{'children': [{'name': ['日常生活活动障碍'], 'children': [{'children': [{'name': ['失禁'], 'children': [{'children': [{'name': ['尿失禁']}]}]}]}]}]}, {'children': [{'name': ['运动不耐受']}]}]}]}]};
+
+
+let createRadialTree = function (input) {
+    let height = 5000;
+    let width = 5000;
+
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    let diameter = height * 0.75;
+    let radius = diameter / 2;
+
+    let tree = d3.tree()
+        .size([2*Math.PI, radius])
+        .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
+
+    let data = d3.hierarchy(input)
+
+    let treeData = tree(data);
+
+    let nodes = treeData.descendants();
+    let links = treeData.links();
+
+    let graphGroup = svg.append('g')
+        .attr('transform', "translate("+(width/2)+","+(height/2)+")");
+
+    graphGroup.selectAll(".link")
+        .data(links)
+        .join("path")
+        .attr("class", "link")
+        .attr("d", d3.linkRadial()
+            .angle(d => d.x)
+            .radius(d => d.y));
+
+
+    let node = graphGroup
+        .selectAll(".node")
+        .data(nodes)
+        .join("g")
+        .attr("class", "node")
+        .attr("transform", function(d){
+            return `rotate(${d.x * 180 / Math.PI - 90})` + `translate(${d.y}, 0)`;
+        });
+
+
+    node.append("circle").attr("r", 1);
+
+    var arr = [
+        "翼状肩胛",
+        "体重异常",
+        "血液肌酸激酶水平异常",
+        "下肢肌肉无力",
+        "反复呼吸道感染",
+        "呼吸衰竭"];
+
+    var arr2 = [
+        "脊柱强直",
+        "脊柱侧弯",
+        "肺功能检测结果异常",
+        "EMG:肌病样异常"];
+
+
+    var arr3 = [];
+
+
+    node.append("text")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", 24)
+        .attr("fill", function(d) {
+            // 检查data是否有name属性
+            if(d.data.hasOwnProperty('name'))
+            {
+                // name有可能是数组
+                if(Array.isArray(d.data.name))
+                {
+                    for (let index = 0; index < d.data.name.length; index++) {
+                        const element = d.data.name[index];
+                        // 判断元素是否在数组中
+                        if(arr.indexOf(element) != -1)
+                        {
+                            return "blue";  // color
+                        }
+                        if(arr2.indexOf(element) != -1)
+                        {
+                            return "orange";  // color
+                        }
+                        if(arr3.indexOf(element) != -1)
+                        {
+                            return "red";  // color
+                        }
+                    }
+                }
+                else if(arr.indexOf(d.data.name) != -1)
+                {
+                    return "blue"; // color
+                }
+                else if(arr2.indexOf(d.data.name) != -1)
+                {
+                    return "orange"; // color
+                }
+                else if(arr3.indexOf(d.data.name) != -1)
+                {
+                    return "red"; // color
+                }
+            }
+            return "green"; // color
+        })
+        .attr("dx", function(d) { return d.x < Math.PI ? 8 : -8; })
+        .attr("dy", ".31em")
+        .attr("text-anchor", function(d) { return d.x < Math.PI ? "start" : "end"; })
+        .attr("transform", function(d) { return d.x < Math.PI ? null : "rotate(180)"; })
+        .text(function(d) { return d.data.name; });
+};
+
+createRadialTree(root);
+
+</script>
+</body>
+</html>

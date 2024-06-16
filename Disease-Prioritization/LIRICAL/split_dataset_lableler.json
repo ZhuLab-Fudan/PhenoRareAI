@@ -1,0 +1,8 @@
+{
+  "ontology": {
+    "time3": {
+      "path": "./HPODataBase/20221215/hp_20221215.obo",
+      "version": "202212"
+    }
+  }
+}

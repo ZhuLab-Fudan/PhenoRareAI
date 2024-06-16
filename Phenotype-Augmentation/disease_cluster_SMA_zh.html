@@ -1,0 +1,191 @@
+<!-- Code adapted from
+https://observablehq.com/@d3/Fradial-tidy-tree
+https://javadude.wordpress.com/2012/06/20/d3-js-from-tree-to-cluster-and-radial-projection/
+https://stackoverflow.com/questions/59783070/d3-v5-radial-tree-cluster
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>D3.js Radial Tree Example</title>
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+        <style>
+            svg {
+                border: solid 1px #ccc;
+            }
+            .link {
+                fill: none;
+                stroke: #ccc;
+                stroke-width: 1.5px;
+            }
+        </style>
+    </head>
+    <body>
+
+
+<script type="text/javascript">
+
+    let root = {"name" : "表型异常", "children" : [{'children': [{'name': ['神经系统异常'], 'children': [{'children': [{'name': ['神经系统生理功能异常'], 'children': [{'children': [{'name': ['神经发育异常'], 'children': [{'children': [{'name': ['神经发育延迟'], 'children': [{'children': [{'name': ['运动发育迟缓'], 'children': [{'children': [{'name': ['粗大运动发育迟缓'], 'children': [{'children': [{'name': ['辅助行走能力发育延迟']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['运动异常'], 'children': [{'children': [{'name': ['肌纤维颤动'], 'children': [{'children': [{'name': ['舌肌束震颤']}]}]}]}, {'children': [{'name': ['步态不稳_Gait disturbance'], 'children': [{'children': [{'name': ['蹒跚步态']}]}, {'children': [{'name': ['行走困难']}]}, {'children': [{'name': ['行走不能'], 'children': [{'children': [{'name': ['无法行走']}]}]}]}, {'children': [{'name': ['跌倒']}]}]}]}, {'children': [{'name': ['不自主运动'], 'children': [{'children': [{'name': ['肌束震颤']}]}, {'children': [{'name': ['震颤'], 'children': [{'children': [{'name': ['按解剖部位分类的震颤'], 'children': [{'children': [{'name': ['手部震颤']}]}]}]}]}]}]}]}, {'children': [{'name': ['反射异常'], 'children': [{'children': [{'name': ['腱反射减低'], 'children': [{'children': [{'name': ['腱反射减弱']}]}, {'children': [{'name': ['神经反射消失']}]}]}]}]}]}]}]}, {'children': [{'name': ['中枢性运动功能异常'], 'children': [{'children': [{'name': ['协调异常'], 'children': [{'children': [{'name': ['不协调']}]}]}]}, {'children': [{'name': ['不自主运动'], 'children': [{'children': [{'name': ['肌束震颤']}]}, {'children': [{'name': ['震颤'], 'children': [{'children': [{'name': ['按解剖部位分类的震颤'], 'children': [{'children': [{'name': ['手部震颤']}]}]}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['神经系统形态异常'], 'children': [{'children': [{'name': ['周围神经系统形态异常'], 'children': [{'children': [{'name': ['脊髓前角细胞形态异常'], 'children': [{'children': [{'name': ['前角细胞变性']}]}]}]}]}]}, {'children': [{'name': ['中枢神经系统的形态异常'], 'children': [{'children': [{'name': ['影响中枢神经系统的萎缩/退化'], 'children': [{'children': [{'name': ['运动神经元萎缩']}]}]}]}]}]}, {'children': [{'name': ['神经元形态异常'], 'children': [{'children': [{'name': ['运动神经元的形态异常'], 'children': [{'children': [{'name': ['运动神经元萎缩']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['免疫系统异常'], 'children': [{'children': [{'name': ['免疫系统功能异常'], 'children': [{'children': [{'name': ['异常感染'], 'children': [{'children': [{'name': ['反复感染'], 'children': [{'children': [{'name': ['反复呼吸道感染']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['肢体异常'], 'children': [{'children': [{'name': ['肢体肌束颤动']}]}, {'children': [{'name': ['下肢异常'], 'children': [{'children': [{'name': ['下肢反射消失'], 'children': [{'children': [{'name': ['踝反射降低/缺如'], 'children': [{'children': [{'name': ['跟腱反射缺如']}]}]}]}, {'children': [{'name': ['膝反射消失']}]}]}]}, {'children': [{'name': ['下肢肌肉异常'], 'children': [{'children': [{'name': ['小腿肌肉异常'], 'children': [{'children': [{'name': ['小腿肌肉肥大']}]}]}]}, {'children': [{'name': ['大腿肌肉异常'], 'children': [{'children': [{'name': ['下肢近端肌肉萎缩'], 'children': [{'children': [{'name': ['股四头肌肌肉萎缩_Quadriceps muscle atrophy']}]}]}]}]}]}, {'children': [{'name': ['下肢肌肥大'], 'children': [{'children': [{'name': ['小腿肌肉肥大']}]}]}]}]}]}]}]}, {'children': [{'name': ['四肢肌肉异常'], 'children': [{'children': [{'name': ['四肢肌肉无力'], 'children': [{'children': [{'name': ['下肢肌肉无力']}]}, {'children': [{'name': ['下肢近端肌无力']}]}, {'children': [{'name': ['上肢肌无力']}]}]}]}, {'children': [{'name': ['肢带肌萎缩'], 'children': [{'children': [{'name': ['肩胛带肌肉萎缩']}]}, {'children': [{'name': ['骨盆带肌萎缩_Pelvic girdle amyotrophy']}]}]}]}, {'children': [{'name': ['下肢肌肉异常'], 'children': [{'children': [{'name': ['小腿肌肉异常'], 'children': [{'children': [{'name': ['小腿肌肉肥大']}]}]}]}, {'children': [{'name': ['大腿肌肉异常'], 'children': [{'children': [{'name': ['下肢近端肌肉萎缩'], 'children': [{'children': [{'name': ['股四头肌肌肉萎缩_Quadriceps muscle atrophy']}]}]}]}]}]}, {'children': [{'name': ['下肢肌肥大'], 'children': [{'children': [{'name': ['小腿肌肉肥大']}]}]}]}]}]}, {'children': [{'name': ['肢带肌无力'], 'children': [{'children': [{'name': ['骨盆带肌无力']}]}, {'children': [{'name': ['肩胛带肌肉无力']}]}]}]}, {'children': [{'name': ['上肢肌肉异常'], 'children': [{'children': [{'name': ['上肢肌萎缩'], 'children': [{'children': [{'name': ['上肢远端肌萎缩']}]}]}]}, {'children': [{'name': ['手部肌肉异常'], 'children': [{'children': [{'name': ['手肌无力']}]}, {'children': [{'name': ['手部肌肉萎缩'], 'children': [{'children': [{'name': ['鱼际肌萎缩']}]}]}]}]}]}, {'children': [{'name': ['肩胛带肌肉异常']}]}]}]}]}]}, {'children': [{'name': ['上肢异常'], 'children': [{'children': [{'name': ['手异常'], 'children': [{'children': [{'name': ['手部肌肉异常'], 'children': [{'children': [{'name': ['手肌无力']}]}, {'children': [{'name': ['手部肌肉萎缩'], 'children': [{'children': [{'name': ['鱼际肌萎缩']}]}]}]}]}]}]}]}, {'children': [{'name': ['上肢肌肉异常'], 'children': [{'children': [{'name': ['上肢肌萎缩'], 'children': [{'children': [{'name': ['上肢远端肌萎缩']}]}]}]}, {'children': [{'name': ['手部肌肉异常'], 'children': [{'children': [{'name': ['手肌无力']}]}, {'children': [{'name': ['手部肌肉萎缩'], 'children': [{'children': [{'name': ['鱼际肌萎缩']}]}]}]}]}]}, {'children': [{'name': ['肩胛带肌肉异常']}]}]}]}]}]}]}]}, {'children': [{'name': ['代谢紊乱/稳态失衡'], 'children': [{'children': [{'name': ['血液代谢物浓度异常'], 'children': [{'children': [{'name': ['血液蛋白水平异常'], 'children': [{'children': [{'name': ['循环系统内酶浓度水平异常'], 'children': [{'children': [{'name': ['血液肌酸激酶水平异常']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['乳房异常']}]}, {'children': [{'name': ['心血管系统的任何异常。'], 'children': [{'children': [{'name': ['心血管系统形态异常'], 'children': [{'children': [{'name': ['心脏形态异常'], 'children': [{'children': [{'name': ['心室形态异常'], 'children': [{'children': [{'name': ['室间隔形态异常'], 'children': [{'children': [{'name': ['室间隔缺损']}]}]}]}]}]}, {'children': [{'name': ['心脏间隔异常'], 'children': [{'children': [{'name': ['室间隔形态异常'], 'children': [{'children': [{'name': ['室间隔缺损']}]}]}]}, {'children': [{'name': ['房间隔形态异常']}]}]}]}, {'children': [{'name': ['心房形态异常'], 'children': [{'children': [{'name': ['房间隔缺损']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['头颈部异常'], 'children': [{'children': [{'name': ['头部异常'], 'children': [{'children': [{'name': ['颅骨形态异常_Abnormal skull morphology'], 'children': [{'children': [{'name': ['面部骨骼形态异常'], 'children': [{'children': [{'name': ['颌部形态异常'], 'children': [{'children': [{'name': ['下颌骨形态异常'], 'children': [{'children': [{'name': ['张口受限']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['脸部异常'], 'children': [{'children': [{'name': ['嘴部异常'], 'children': [{'children': [{'name': ['口腔形态异常_Abnormal oral morphology'], 'children': [{'children': [{'name': ['口腔形态异常_Abnormal oral cavity morphology'], 'children': [{'children': [{'name': ['舌异常'], 'children': [{'children': [{'name': ['舌头生理异常']}]}]}]}]}]}]}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['呼吸系统异常'], 'children': [{'children': [{'name': ['呼吸系统生理异常'], 'children': [{'children': [{'name': ['呼吸功能不全'], 'children': [{'children': [{'name': ['呼吸衰竭']}]}]}]}]}]}, {'children': [{'name': ['呼吸系统形态学异常'], 'children': [{'children': [{'name': ['肺部形态异常'], 'children': [{'children': [{'name': ['呼吸道感染'], 'children': [{'children': [{'name': ['反复呼吸道感染']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['肌肉骨骼系统异常'], 'children': [{'children': [{'name': ['骨骼系统异常'], 'children': [{'children': [{'name': ['骨骼形态异常'], 'children': [{'children': [{'name': ['中轴骨骼形态异常'], 'children': [{'children': [{'name': ['脊柱异常'], 'children': [{'children': [{'name': ['脊柱曲度异常'], 'children': [{'children': [{'name': ['脊柱侧弯']}]}]}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['肌肉组织异常'], 'children': [{'children': [{'name': ['骨骼肌形态异常'], 'children': [{'children': [{'name': ['肌纤维形态异常'], 'children': [{'children': [{'name': ['中央成核的骨骼肌纤维']}]}, {'children': [{'name': ['肌纤维坏死']}]}, {'children': [{'name': ['成角度的肌纤维']}]}, {'children': [{'name': ['骨骼肌纤维的大小异常'], 'children': [{'children': [{'name': ['肌纤维直径变异性增大']}]}]}]}, {'children': [{'name': ['肌纤维类型分布异常'], 'children': [{'children': [{'name': ['1型肌纤维优势']}]}]}]}, {'children': [{'name': ['镶边空泡']}]}]}]}, {'children': [{'name': ['肌肉大小异常'], 'children': [{'children': [{'name': ['骨骼肌肥大']}]}, {'children': [{'name': ['骨骼肌萎缩'], 'children': [{'children': [{'name': ['近端肌萎缩']}]}, {'children': [{'name': ['远端肌肉萎缩']}]}, {'children': [{'name': ['脊肌萎缩']}]}]}]}]}]}]}]}, {'children': [{'name': ['肌肉生理机能异常'], 'children': [{'children': [{'name': ['肌电图异常'], 'children': [{'children': [{'name': ['肌电图_EMG: neuropathic changes'], 'children': [{'children': [{'name': ['肌电图:慢性失神经支配的征象']}]}]}]}, {'children': [{'name': ['肌电图_EMG: axonal abnormality'], 'children': [{'children': [{'name': ['肌电图: 正锐波']}]}]}]}]}]}, {'children': [{'name': ['功能性运动障碍'], 'children': [{'children': [{'name': ['爬楼梯困难']}]}, {'children': [{'name': ['行走困难']}]}, {'children': [{'name': ['频繁跌倒']}]}]}]}, {'children': [{'name': ['肌张力异常'], 'children': [{'children': [{'name': ['肌张力减退'], 'children': [{'children': [{'name': ['全身性肌张力减低']}]}]}]}]}]}, {'children': [{'name': ['肌肉痉挛']}]}, {'children': [{'name': ['肌无力_Muscle weakness'], 'children': [{'children': [{'name': ['头部控制能力弱']}]}, {'children': [{'name': ['近端肌肉无力']}]}]}]}]}]}]}]}]}]}, {'children': [{'name': ['胎儿产前发育或出生异常'], 'children': [{'children': [{'name': ['胎儿异常'], 'children': [{'children': [{'name': ['胎儿生理异常'], 'children': [{'children': [{'name': ['产前胎动异常'], 'children': [{'children': [{'name': ['胎动减少']}]}]}]}]}]}]}]}]}]}]
+    };
+
+
+let createRadialTree = function (input) {
+    let height = 5000;
+    let width = 5000;
+
+    let svg = d3.select('body')
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    let diameter = height * 0.75;
+    let radius = diameter / 2;
+
+    let tree = d3.tree()
+        .size([2*Math.PI, radius])
+        .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
+
+    let data = d3.hierarchy(input)
+
+    let treeData = tree(data);
+
+    let nodes = treeData.descendants();
+    let links = treeData.links();
+
+    let graphGroup = svg.append('g')
+        .attr('transform', "translate("+(width/2)+","+(height/2)+")");
+
+    graphGroup.selectAll(".link")
+        .data(links)
+        .join("path")
+        .attr("class", "link")
+        .attr("d", d3.linkRadial()
+            .angle(d => d.x)
+            .radius(d => d.y));
+
+
+    let node = graphGroup
+        .selectAll(".node")
+        .data(nodes)
+        .join("g")
+        .attr("class", "node")
+        .attr("transform", function(d){
+            return `rotate(${d.x * 180 / Math.PI - 90})` + `translate(${d.y}, 0)`;
+        });
+
+
+
+    var arr = [
+        "青年成人早期起病",
+        "进行性/渐进性",
+        "爬楼梯困难",
+        "频繁跌倒",
+        "跌倒",
+        "行走不能",
+        "行走困难",
+        "辅助行走能力发育延迟",
+        "上肢肌无力",
+        "手肌无力",
+        "小腿肌肉肥大",
+        "近端肌萎缩",
+        "上肢远端肌萎缩",
+        "鱼际肌萎缩",
+        "脊柱侧弯",
+        "肢带肌萎缩",
+        "张口受限",
+        "乳房异常",
+        "反复呼吸道感染",
+        "家族史",
+        "下肢肌肉无力",
+        "丧失行走能力",
+        "近端肌肉无力",
+        "手肌无力",
+        "近端肌萎缩",
+        "上肢远端肌萎缩",
+        "下肢近端肌肉萎缩",
+        "肩胛带肌肉无力",
+        "肩胛带肌肉萎缩",
+        "骨盆带肌萎缩",
+        "张口受限"];
+
+
+
+    var arr2 = [
+        "肌电图：神经源性变化",
+        "肌电图: 正锐波",
+        "腱反射减弱",
+        "跟腱反射缺如",
+        "膝反射消失",
+        "肌电图:慢性失神经支配的征象"];
+
+    var arr3 = [
+        "肌肉痉挛"];
+
+    var arr4 = [""];
+
+        //
+
+
+    node.append("text")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", 24)
+        .attr("fill", function(d) {
+            // 检查data是否有name属性
+            if(d.data.hasOwnProperty('name'))
+            {
+                // name有可能是数组
+                if(Array.isArray(d.data.name))
+                {
+                    for (let index = 0; index < d.data.name.length; index++) {
+                        const element = d.data.name[index];
+                        // 判断元素是否在数组中
+                        if(arr.indexOf(element) != -1)
+                        {
+                            return "blue";  // color
+                        }
+                        if(arr2.indexOf(element) != -1)
+                        {
+                            return "orange";  // color
+                        }
+                        if(arr3.indexOf(element) != -1)
+                        {
+                            return "red";  // color
+                        }
+                        if(arr4.indexOf(element) != -1)
+                        {
+                            return "purple";  // color
+                        }
+                    }
+                }
+                else if(arr.indexOf(d.data.name) != -1)
+                {
+                    return "blue"; // color
+                }
+                else if(arr2.indexOf(d.data.name) != -1)
+                {
+                    return "orange"; // color
+                }
+                else if(arr3.indexOf(d.data.name) != -1)
+                {
+                    return "red"; // color
+                }
+                else if(arr4.indexOf(d.data.name) != -1)
+                {
+                    return "purple"; // color
+                }
+            }
+            return "green"; // color
+        })
+        .attr("dx", function(d) { return d.x < Math.PI ? 8 : -8; })
+        .attr("dy", ".31em")
+        .attr("text-anchor", function(d) { return d.x < Math.PI ? "start" : "end"; })
+        .attr("transform", function(d) { return d.x < Math.PI ? null : "rotate(180)"; })
+        .text(function(d) { return d.data.name; });
+};
+
+createRadialTree(root);
+
+</script>
+</body>
+</html>

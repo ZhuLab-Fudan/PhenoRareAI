@@ -1,5 +1,5 @@
 import sys
-import txt2hpo_rank_gptner_disease_symptom_finetuned_ner_biomedical as txt2hpo
+import txt2hpo_rank_huatuogpt2ner_disease_symptom_finetuned_ner_biomedical as txt2hpo
 import pickle
 
 import os
@@ -18,7 +18,7 @@ import torch
 from tqdm.auto import tqdm
 from transformers import AutoTokenizer, AutoModel
 
-datacohort='_gptner_disease_symptom_finetuned_ner_biomedical'
+datacohort='_huatuogpt2ner_disease_symptom_finetuned_ner_biomedical'
 # raredisease="LOPD"
 
 
@@ -91,14 +91,14 @@ for i in data_filter["termid"]:
 path_data="./hospital_data"
 import os
 
-path = "gpt_result/finetuned_ner_biomedical_disease_symptom_result"
+path = "huatuogpt2_result/finetuned_ner_biomedical_disease_symptom_result"
 os.makedirs(path)
 
-path_gpt_result="gpt_result/finetuned_ner_biomedical_disease_symptom_result"
+path_huatuogpt2_result="huatuogpt2_result/finetuned_ner_biomedical_disease_symptom_result"
 
 
 patient_already_list=[]
-filessss = os.listdir(path_gpt_result)
+filessss = os.listdir(path_huatuogpt2_result)
 for filea in filessss:
     patient_name_a=str(filea).split(".")[0]
     patient_already_list.append(patient_name_a)
@@ -114,11 +114,11 @@ for file in files:
         elements_index_place_begin = []
         elements_index_place_end = []
         path_allgram = "."
-        data_allgram = pd.read_csv(path_allgram + "/" + "gptner_disease_symptom_elements.csv")
+        data_allgram = pd.read_csv(path_allgram + "/" + "huatuogpt2ner_disease_symptom_elements.csv")
         # patient_fill,allngram_text,index,index_place,label,score
         for i in range(0, data_allgram.shape[0]):
 
-            patient_allgramtext = data_allgram["gptner_enetity"][i]
+            patient_allgramtext = data_allgram["huatuogpt2ner_enetity"][i]
             patient_idmap = data_allgram["patient_name"][i]
             patient_beginid = data_allgram["begin_id"][i]
             patient_endid = data_allgram["end_id"][i]
@@ -232,7 +232,7 @@ for file in files:
         fo_csv.reset_index(inplace=True)
         #
         # fo.write('#Given_HPO\tHPO_name\tHPO_name_cn\tElement\tbegin\tend\tscore\n')
-        fo_csv.to_csv(path_gpt_result+"/"+patient_name+"-rank.csv",index=None)
+        fo_csv.to_csv(path_huatuogpt2_result+"/"+patient_name+"-rank.csv",index=None)
 
 
 

@@ -12,7 +12,7 @@ from tqdm.auto import tqdm
 from transformers import AutoTokenizer, AutoModel
 
 
-datacohort='_gptner_disease_symptom_finetuned_ner_biomedical'
+datacohort='_huatuogpt2ner_disease_symptom_finetuned_ner_biomedical'
 
 
 with open("bert-base-chinese-finetuned-NER-biomedical_feature_chpo_phenopro_core_dict.json") as fp:

@@ -12,7 +12,7 @@ from tqdm.auto import tqdm
 from transformers import AutoTokenizer, AutoModel
 
 
-datacohort='_gptner_disease_symptom_lopd_medical_ner_later_1'
+datacohort='_huatuogpt2ner_disease_symptom_lopd_medical_ner_later_1'
 
 chinese_dict_path="/public/home/zhaiwq/tmp/HPONEREL_pycharm_project/GPUNER/S-DATA"
 

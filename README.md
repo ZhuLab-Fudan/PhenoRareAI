@@ -9,17 +9,21 @@ The Phenotype-Augmentation folder holds the Phenotypic Radiographs web files aft
 
 # CHPO-NER
 
-1. Store electronic hospital medical data  file of txt format and json format in the CHPO-NER/hospital_data and CHPO-NER/hospital_data_json folder
 
-2. Download https://huggingface.co/Adapting/bert-base-chinese-finetuned-NER-biomedical and https://huggingface.co/iioSnail/bert-base-chinese- medical-ner to CHPO-NER/TXT2HPO (or download https://drive.google.com/file/d/1Kvnd26gKvDQX0t95ZvytuqNmzbGbEDt1/view?usp=drive_link to CHPO- NER/TXT2HPO)
+1. Store electronic hospital medical data file of txt format and json format in the CHPO-NER/hospital_data and CHPO-NER/hospital_data_json folder
 
-3. Run python bert_base_chinese_finetuned_biomedical_api.py (bert_base_chinese_medical_api.py) [Set API_TOKEN] and Run python labelByGPT_disease_ symptom.py [Set openai.api_key and Modify the prompt format in labelByGPT_disease_symptom.py]
+2. Download https://huggingface.co/FreedomIntelligence/HuatuoGPT2-7B to CHPO-NER (or download https://drive.google.com/file/d/1Kvnd26gKvDQX0t95ZvytuqNmzbGbEDt1/view?usp=drive_link to CHPO-NER)
 
-4. Run python chpobert-entity-process.py and Run python gpt-entity-process.py to process the recognition results of the previous step, get the recognition results of each patient's EHR into csv files(stored in the CBERT-NER-API and GPT-NER-API folders).
+3. Download https://huggingface.co/Adapting/bert-base-chinese-finetuned-NER-biomedical and https://huggingface.co/iioSnail/bert-base-chinese-medical-ner to CHPO-NER/TXT2HPO (or download https://drive.google.com/file/d/1Kvnd26gKvDQX0t95ZvytuqNmzbGbEDt1/view?usp=drive_link to CHPO-NER/TXT2HPO)
 
-5. Go to the CHPO-NER/TXT2HPO folder and Run python chinese-finetuned-NER-biomedical_chpo_embedding.py and python chinese-medical-ner_chpo_embedding.py to create Chinese embedding dictionarys (or download https://drive.google.com/file/d/1rTm8-_Dy2apRBu8EjcrbMtX7XUIda0A1/view?usp=drive_link stored in CHPO-NER/TXT2HPO)
+4. Run python bert_base_chinese_finetuned_biomedical_api.py (bert_base_chinese_medical_api.py) [Set API_TOKEN] and Run python huatuogpt2_prompt_disease_symptom.py [Set openai.api_key and Modify the prompt format in labelByGPT_disease_symptom.py]
 
-6. Follow the PhenoPro running process(https://github.com/jumphone/PhenoPro). (1) Run Python step0_dumping.py. (2) Run our seven models for phenotype identification, such as Run python txt2hpo_sunday_zh_cn.py, Run python step1_txt2hpo_cutoff_finetuned _ner_biomedical.py and Run python step1_txt2hpo_gptner_disease_symptom_finetuned_ner_biomedical.py
+5. Run python chpobert-entity-process.py and Run python huatuogpt2_ner_enetity_process.py to process the recognition results of the previous step, get the recognition results of each patient's EHR into csv files(stored in the CBERT-NER-API and HuatuoGPT2-NER-API folders).
+
+6. Go to the CHPO-NER/TXT2HPO folder and Run python chinese-finetuned-NER-biomedical_chpo_embedding.py and python chinese-medical-ner_chpo_embedding.py to create Chinese embedding dictionarys (or download https://drive.google.com/file/d/1rTm8-_Dy2apRBu8EjcrbMtX7XUIda0A1/view?usp=drive_link stored in CHPO-NER/TXT2HPO)
+
+7. Follow the PhenoPro running process(https://github.com/jumphone/PhenoPro). (1) Run Python step0_dumping.py. (2) Run our seven models for phenotype identification, such as Run python txt2hpo_sunday_zh_cn.py, Run python step1_txt2hpo_cutoff_finetuned _ner_biomedical.py and Run python step1_txt2hpo_gptner_disease_symptom_finetuned_ner_biomedical.py
+
 
 
 # Disease-Prioritization
